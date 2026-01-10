@@ -1,0 +1,18 @@
+mode: mock  # Options: mock, test, production
+
+mock:
+  enabled: true
+
+test:
+  enabled: true
+  baseURL: https://your-n8n-instance.com  # Replace with your N8N instance URL
+  token: your-n8n-api-token  # Replace with your N8N API token
+  workflow:
+    id: your-workflow-id
+
+production:
+  enabled: true
+  baseURL: https://your-n8n-instance.com
+  token: your-production-token
+  workflow:
+    id: your-workflow-id
