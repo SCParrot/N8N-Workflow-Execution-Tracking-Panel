@@ -9,14 +9,14 @@ A workflow execution tracking panel built with Next.js + ECharts + Tailwind CSS 
 
 ## 🚀 Features
 
-- ✅ **Workflow Selection**: Get real workflow list from N8N instance, support switching between different workflows
+- ✅ **Workflow Selection**: Hover-expandable selection panel for seamless workflow switching with "Active Indicator"
 - ✅ **Execution Statistics**: Display execution success/failure counts for last 1 hour, 6 hours, 12 hours, 1 day
-- ✅ **Execution Trend**: 24-hour execution trend line chart with 30-minute intervals
-- ✅ **Execution Distribution**: Pie chart showing execution result distribution across different time ranges
+- ✅ **Execution Trend**: 24-hour execution trend line chart with "Gradient Flow" design and auto-refresh without animation
+- ✅ **Execution Distribution**: Glassmorphism-style pie chart showing execution result distribution
 - ✅ **Multi-mode Support**: Support mock data mode, test mode, production mode
 - ✅ **Real-time Data**: Fetch real execution data from N8N API
 - ✅ **Docker Deployment**: Support one-click Docker deployment
-- ✅ **Responsive Design**: Adapt to different screen sizes
+- ✅ **Responsive Design**: Adapt to different screen sizes with a premium feel
 
 ## � Screenshots
 
@@ -30,9 +30,11 @@ A workflow execution tracking panel built with Next.js + ECharts + Tailwind CSS 
 
 ## �️ Tech Stack
 
-- **Frontend Framework**: Next.js 14 (App Router)
-- **Visualization Library**: ECharts
-- **Styling**: Tailwind CSS
+- **Frontend Framework**: Next.js 14.2.3 (App Router)
+- **Visualization Library**: ECharts 5.4.3
+- **Styling**: Tailwind CSS 3.4.3 with custom glassmorphism utilities
+- **Typography**: Inter (Google Fonts)
+- **State Management**: React 18.3.1
 - **Configuration**: YAML
 - **Build Tool**: Next.js Build
 - **Deployment**: Docker + PM2

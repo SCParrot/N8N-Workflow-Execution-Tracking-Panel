@@ -10,50 +10,82 @@ interface ExecutionChartProps {
 const ExecutionChart: React.FC<ExecutionChartProps> = ({ data }) => {
   const option = {
     animation: false,
+    // animationDuration: 1500,
+    // animationEasing: 'cubicOut',
+    backgroundColor: 'transparent',
     tooltip: {
       trigger: 'axis',
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      borderColor: '#e2e8f0',
+      borderWidth: 1,
+      textStyle: {
+        color: '#1e293b',
+        fontSize: 12,
+        fontFamily: 'Inter, sans-serif',
+      },
+      padding: [10, 15],
+      extraCssText: 'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border-radius: 8px; backdrop-filter: blur(4px);',
       axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985',
+        type: 'line',
+        lineStyle: {
+          color: '#94a3b8',
+          width: 1,
+          type: 'dashed',
         },
       },
     },
     legend: {
       data: ['Success', 'Failure'],
-      top: 10,
-      left: 'center',
+      top: 0,
+      right: 0,
+      icon: 'circle',
+      itemWidth: 8,
+      itemHeight: 8,
       textStyle: {
+        color: '#64748b',
         fontSize: 12,
+        fontFamily: 'Inter, sans-serif',
       },
     },
-    // grid: {
-    //   left: '3%',
-    //   right: '4%',
-    //   bottom: '3%',
-    //   height:500,
-    //   containLabel: true,
-    // },
+    grid: {
+      left: '2%',
+      right: '2%',
+      bottom: '5%',
+      top: '15%',
+      containLabel: true,
+    },
     xAxis: [
       {
         type: 'category',
         boundaryGap: false,
         data: data.map(item => item.time),
+        axisLine: { show: false },
+        axisTick: { show: false },
         axisLabel: {
-          rotate: 45,
-          fontSize: 10,
+          color: '#94a3b8',
+          fontSize: 11,
+          fontFamily: 'Inter, sans-serif',
+          margin: 15,
         },
+        splitLine: { show: false },
       },
     ],
     yAxis: [
       {
         type: 'value',
-        name: 'Execution Count',
-        nameTextStyle: {
-          fontSize: 12,
-        },
+        axisLine: { show: false },
+        axisTick: { show: false },
         axisLabel: {
-          fontSize: 10,
+          color: '#94a3b8',
+          fontSize: 11,
+          fontFamily: 'Inter, sans-serif',
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: '#f1f5f9',
+            type: 'dashed',
+          },
         },
       },
     ],
@@ -61,14 +93,20 @@ const ExecutionChart: React.FC<ExecutionChartProps> = ({ data }) => {
       {
         name: 'Success',
         type: 'line',
-        animation: false,
-        smooth: true,
+        smooth: 0.4,
+        showSymbol: false,
+        symbolSize: 8,
         lineStyle: {
-          width: 2,
-          color: '#52c41a',
+          width: 3,
+          color: '#10b981', // Emerald 500
+          shadowColor: 'rgba(16, 185, 129, 0.3)',
+          shadowBlur: 10,
+          shadowOffsetY: 5,
         },
         itemStyle: {
-          color: '#52c41a',
+          color: '#10b981',
+          borderWidth: 2,
+          borderColor: '#fff',
         },
         areaStyle: {
           color: {
@@ -78,33 +116,30 @@ const ExecutionChart: React.FC<ExecutionChartProps> = ({ data }) => {
             x2: 0,
             y2: 1,
             colorStops: [
-              {
-                offset: 0,
-                color: 'rgba(82, 196, 26, 0.3)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(82, 196, 26, 0.05)',
-              },
+              { offset: 0, color: 'rgba(16, 185, 129, 0.25)' },
+              { offset: 1, color: 'rgba(16, 185, 129, 0)' },
             ],
           },
-        },
-        emphasis: {
-          focus: 'series',
         },
         data: data.map(item => item.success),
       },
       {
         name: 'Failure',
         type: 'line',
-        animation: false,
-        smooth: true,
+        smooth: 0.4,
+        showSymbol: false,
+        symbolSize: 8,
         lineStyle: {
-          width: 2,
-          color: '#ff4d4f',
+          width: 3,
+          color: '#f43f5e', // Rose 500
+          shadowColor: 'rgba(244, 63, 94, 0.3)',
+          shadowBlur: 10,
+          shadowOffsetY: 5,
         },
         itemStyle: {
-          color: '#ff4d4f',
+          color: '#f43f5e',
+          borderWidth: 2,
+          borderColor: '#fff',
         },
         areaStyle: {
           color: {
@@ -114,19 +149,10 @@ const ExecutionChart: React.FC<ExecutionChartProps> = ({ data }) => {
             x2: 0,
             y2: 1,
             colorStops: [
-              {
-                offset: 0,
-                color: 'rgba(255, 77, 79, 0.3)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(255, 77, 79, 0.05)',
-              },
+              { offset: 0, color: 'rgba(244, 63, 94, 0.25)' },
+              { offset: 1, color: 'rgba(244, 63, 94, 0)' },
             ],
           },
-        },
-        emphasis: {
-          focus: 'series',
         },
         data: data.map(item => item.failure),
       },
@@ -134,10 +160,25 @@ const ExecutionChart: React.FC<ExecutionChartProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4 h-full flex flex-col" data-testid="line-chart">
-      <h3 className="text-lg font-semibold mb-3 text-gray-800">Execution Trend Chart (Every Half Hour)</h3>
-      <div className="flex-grow">
-        <ReactECharts option={option} style={{ height: '20rem', width: '100%' }} />
+    <div className="glass-card p-6 h-full flex flex-col relative overflow-hidden group" data-testid="line-chart">
+      {/* Decorative highlight */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-primary-100/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none group-hover:bg-primary-100/50 transition-colors duration-500"></div>
+
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <div>
+          <h3 className="text-lg font-bold text-slate-800 tracking-tight">Execution Trend</h3>
+          <p className="text-xs text-slate-500 font-medium">Last 24 hours performance</p>
+        </div>
+        <div className="flex gap-2">
+          {/* Custom Legend dots could go here if we wanted to replace ECharts legend */}
+        </div>
+      </div>
+
+      <div className="flex-grow w-full relative z-10">
+        <ReactECharts
+          option={option}
+          style={{ height: '100%', width: '100%', minHeight: '300px' }}
+        />
       </div>
     </div>
   );
