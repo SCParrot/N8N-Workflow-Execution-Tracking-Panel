@@ -34,7 +34,7 @@ export interface ChartData {
 
 // Generate mock workflow list
 export const generateTestWorkflows = (): Workflow[] => {
-  return [
+  const workflows: Workflow[] = [
     {
       id: 'workflow-1',
       name: 'Data Sync Workflow',
@@ -60,6 +60,18 @@ export const generateTestWorkflows = (): Workflow[] => {
       createdAt: new Date().toISOString(),
     },
   ];
+
+  // Add more fake workflows
+  for (let i = 5; i <= 15; i++) {
+    workflows.push({
+      id: `workflow-${i}`,
+      name: `Automated Task ${i} - ${['Sales', 'Marketing', 'DevOps', 'HR', 'Finance'][Math.floor(Math.random() * 5)]}`,
+      active: true,
+      createdAt: new Date().toISOString(),
+    });
+  }
+
+  return workflows;
 };
 
 // Generate test data
@@ -68,12 +80,12 @@ export const generateTestData = (workflowId?: string): WorkflowExecution[] => {
   const now = new Date();
   const workflows = generateTestWorkflows();
   const targetWorkflowId = workflowId || workflows[0].id;
-  
+
   // Generate data for the last 24 hours, one execution record every 10 minutes
   for (let i = 0; i < 144; i++) {
     const startTime = new Date(now.getTime() - i * 10 * 60 * 1000);
     const endTime = new Date(startTime.getTime() + Math.random() * 60 * 1000);
-    
+
     // Generate data for all workflows or only for the specified workflow
     if (!workflowId) {
       // Generate data for each workflow
@@ -97,7 +109,7 @@ export const generateTestData = (workflowId?: string): WorkflowExecution[] => {
       });
     }
   }
-  
+
   return executions;
 };
 
@@ -105,12 +117,12 @@ export const generateTestData = (workflowId?: string): WorkflowExecution[] => {
 export const calculateStats = (executions: WorkflowExecution[], workflowId?: string) => {
   const now = new Date();
   const stats: Record<string, TimeRangeStats> = {};
-  
+
   // Filter data for the specified workflow
-  const filteredExecutions = workflowId 
+  const filteredExecutions = workflowId
     ? executions.filter(exec => exec.workflowId === workflowId)
     : executions;
-  
+
   // Time range configuration
   const timeRanges = [
     { key: 'lastHour', name: 'Last 1 Hour', hours: 1 },
@@ -118,18 +130,18 @@ export const calculateStats = (executions: WorkflowExecution[], workflowId?: str
     { key: 'lastTwelveHours', name: 'Last 12 Hours', hours: 12 },
     { key: 'lastDay', name: 'Last 24 Hours', hours: 24 },
   ];
-  
+
   for (const range of timeRanges) {
     const timeRangeStart = new Date(now.getTime() - range.hours * 60 * 60 * 1000);
-    
+
     const rangeFiltered = filteredExecutions.filter(exec => {
       const execTime = new Date(exec.startedAt);
       return execTime >= timeRangeStart && execTime <= now;
     });
-    
+
     const success = rangeFiltered.filter(exec => exec.status === 'success').length;
     const failure = rangeFiltered.filter(exec => exec.status === 'error').length;
-    
+
     stats[range.key] = {
       name: range.name,
       success,
@@ -137,7 +149,7 @@ export const calculateStats = (executions: WorkflowExecution[], workflowId?: str
       total: success + failure,
     };
   }
-  
+
   return stats;
 };
 
@@ -145,29 +157,29 @@ export const calculateStats = (executions: WorkflowExecution[], workflowId?: str
 export const generateChartData = (executions: WorkflowExecution[], workflowId?: string): ChartData[] => {
   const now = new Date();
   const chartData: ChartData[] = [];
-  
+
   // Filter data for the specified workflow
-  const filteredExecutions = workflowId 
+  const filteredExecutions = workflowId
     ? executions.filter(exec => exec.workflowId === workflowId)
     : executions;
-  
+
   // Generate data for the last 24 hours, every half hour
   for (let i = 48; i >= 0; i--) {
     const timeRangeStart = new Date(now.getTime() - i * 30 * 60 * 1000);
     const timeRangeEnd = new Date(timeRangeStart.getTime() + 30 * 60 * 1000);
-    
+
     const filtered = filteredExecutions.filter(exec => {
       const execTime = new Date(exec.startedAt);
       return execTime >= timeRangeStart && execTime < timeRangeEnd;
     });
-    
+
     chartData.push({
       time: `${timeRangeStart.getHours().toString().padStart(2, '0')}:${timeRangeStart.getMinutes().toString().padStart(2, '0')}`,
       success: filtered.filter(exec => exec.status === 'success').length,
       failure: filtered.filter(exec => exec.status === 'error').length,
     });
   }
-  
+
   return chartData;
 };
 

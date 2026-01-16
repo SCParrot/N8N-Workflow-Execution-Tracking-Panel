@@ -21,10 +21,10 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
 
     // Initial update
     updateWidth();
-    
+
     // Add window resize listener
     window.addEventListener('resize', updateWidth);
-    
+
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
@@ -33,7 +33,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
     // Responsive configuration
     const isMobile = chartWidth < 640;
     const isSmallScreen = chartWidth < 768;
-    
+
     return {
       animation: false,
       title: {
@@ -57,7 +57,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
         textStyle: {
           fontSize: isMobile ? 14 : 12,
         },
-        formatter: function(name: string) {
+        formatter: function (name: string) {
           if (name === 'Success') {
             return `${name}: ${data.success}`;
           } else if (name === 'Failure') {
@@ -115,7 +115,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
   const isMobile = chartWidth < 640;
 
   return (
-    <div ref={containerRef} className="bg-white rounded-lg shadow-lg p-2 sm:p-4 h-full" data-testid="pie-chart">
+    <div ref={containerRef} className="glass-card p-4 h-full" data-testid="pie-chart">
       {isMobile ? (
         // Mobile: Show only statistics
         <div className="flex flex-col items-center justify-center h-full text-center p-4">
